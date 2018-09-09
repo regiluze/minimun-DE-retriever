@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # vim
-.swp
+*.swp
 
 # C extensions
 *.so
