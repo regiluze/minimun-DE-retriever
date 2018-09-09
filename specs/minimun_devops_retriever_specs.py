@@ -57,3 +57,11 @@ with describe('Minimun devops engineer retriever'):
                 _, DM_data_center_name = self.retriever.process(DM_capacity=20, DE_capacity=8, data_centers=data_centers)
 
                 expect(DM_data_center_name).to(equal(ANOTHER_DATA_CENTER_NAME))
+
+        with context('when there is more than one best data center to place DM'):
+            with _it('I dont know what to do'):
+                data_centers =  [{'name': DATA_CENTER_NAME, "servers": 62 }]
+
+                _, minimun_DE_extra_amount = self.retriever.process(DM_capacity=20, DE_capacity=10, data_centers=data_centers)
+
+                expect(minimun_DE_extra_amount).to(equal(DATA_CENTER_NAME))
