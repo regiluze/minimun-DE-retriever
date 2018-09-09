@@ -4,6 +4,7 @@ from expects import *
 from retriever.minimun_de_retriever import MinimunDevopsEngineerRetriever
 
 DATA_CENTER_NAME = 'irrelevant-data-center-name'
+ANOTHER_DATA_CENTER_NAME = 'another-irrelevant-data-center-name'
 
 with describe('Minimun devops engineer retriever'):
     with before.each:
@@ -11,35 +12,48 @@ with describe('Minimun devops engineer retriever'):
     with context('when processing the input data'):
         with context('when there is only one data center'):
             with it('returns the data center name as best place to be devops manager in'):
-                input_data = {'DM_capacity': 20, 'DE_capacity': 10,
-                              'data_centers': [{'name': DATA_CENTER_NAME, "servers": 62 }]}
+                data_centers =  [{'name': DATA_CENTER_NAME, "servers": 62 }]
 
-                result = self.retriever.process(input_data)
+                _, minimun_DE_extra_amount = self.retriever.process(DM_capacity=20, DE_capacity=10, data_centers=data_centers)
 
-                expect(result['DM_data_center']).to(equal(DATA_CENTER_NAME))
+                expect(minimun_DE_extra_amount).to(equal(DATA_CENTER_NAME))
 
-            with it('returns 1 as minimun devops extra needed'):
-                input_data = {'DM_capacity': 20, 'DE_capacity': 10,
-                              'data_centers': [{'name': DATA_CENTER_NAME, "servers": 30 }]}
+            with it('returns 1 as minimum devops extra needed'):
+                data_centers = [{'name': DATA_CENTER_NAME, "servers": 30 }]
 
-                result = self.retriever.process(input_data)
+                minimum_DE_extra_amount, _ = self.retriever.process(DM_capacity=20, DE_capacity=10, data_centers=data_centers)
 
-                expect(result['DE']).to(equal(1))
+                expect(minimum_DE_extra_amount).to(equal(1))
 
             with context('when data center server number of servers doesnt match exactly with DE capacity'):
-                with it('returns the minimun up rounded'):
-                    input_data = {'DM_capacity': 20, 'DE_capacity': 10,
-                                  'data_centers': [{'name': DATA_CENTER_NAME, "servers": 31 }]}
+                with it('returns the minimum up rounded'):
+                    data_centers = [{'name': DATA_CENTER_NAME, "servers": 31 }]
 
-                    result = self.retriever.process(input_data)
+                    minimum_DE_extra_amount, _ = self.retriever.process(DM_capacity=20, DE_capacity=10, data_centers=data_centers)
 
-                    expect(result['DE']).to(equal(2))
+                    expect(minimum_DE_extra_amount).to(equal(2))
 
             with context('when data center server number of servers is less than DM capacity'):
                 with it('returns zero as extra DE needed'):
-                    input_data = {'DM_capacity': 20, 'DE_capacity': 10,
-                                  'data_centers': [{'name': DATA_CENTER_NAME, "servers": 10 }]}
+                    data_centers = [{'name': DATA_CENTER_NAME, "servers": 10 }]
 
-                    result = self.retriever.process(input_data)
+                    minimum_DE_extra_amount, _ = self.retriever.process(DM_capacity=20, DE_capacity=10, data_centers=data_centers)
 
-                    expect(result['DE']).to(equal(0))
+                    expect(minimum_DE_extra_amount).to(equal(0))
+
+        with context('when there are two data center'):
+            with it('returns the minimum extra DE needed'):
+                data_centers = [{'name': DATA_CENTER_NAME, 'servers': 62 },
+                                {'name': ANOTHER_DATA_CENTER_NAME, 'servers': 20}]
+
+                minimum_DE_extra_amount, _ = self.retriever.process(DM_capacity=20, DE_capacity=8, data_centers=data_centers)
+
+                expect(minimum_DE_extra_amount).to(equal(8))
+
+            with it('returns the best data center name to place the DM in'):
+                data_centers = [{'name': DATA_CENTER_NAME, 'servers': 62 },
+                                {'name': ANOTHER_DATA_CENTER_NAME, 'servers': 20}]
+
+                _, DM_data_center_name = self.retriever.process(DM_capacity=20, DE_capacity=8, data_centers=data_centers)
+
+                expect(DM_data_center_name).to(equal(ANOTHER_DATA_CENTER_NAME))
