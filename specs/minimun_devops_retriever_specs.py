@@ -34,3 +34,12 @@ with describe('Minimun devops engineer retriever'):
                     result = self.retriever.process(input_data)
 
                     expect(result['DE']).to(equal(2))
+
+            with context('when data center server number of servers is less than DM capacity'):
+                with it('returns zero as extra DE needed'):
+                    input_data = {'DM_capacity': 20, 'DE_capacity': 10,
+                                  'data_centers': [{'name': DATA_CENTER_NAME, "servers": 10 }]}
+
+                    result = self.retriever.process(input_data)
+
+                    expect(result['DE']).to(equal(0))
