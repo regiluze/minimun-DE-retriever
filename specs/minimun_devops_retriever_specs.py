@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from expects import *
+from expects import expect, equal
 from retriever.minimun_de_retriever import MinimunDevopsEngineerRetriever
 
 DATA_CENTER_NAME = 'irrelevant-data-center-name'
