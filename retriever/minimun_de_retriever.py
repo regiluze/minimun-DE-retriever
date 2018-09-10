@@ -15,14 +15,14 @@ class MinimunDevopsEngineerRetriever(object):
             elif self._is_needed_the_same_extra_DE(minimum_extra_DE_amount, total_DE_extra_amount):
                 minimum_extra_DE_amount.append(total_DE_extra_amount)
                 DM_best_placed_data_center.append(data_center)
-        DM_best_placed_data_center = sorted(DM_best_placed_data_center, key=lambda data_center: data_center['servers'], reverse=True)
+        DM_best_placed_data_center = self._sort_by_server_amount(DM_best_placed_data_center)
 
         return minimum_extra_DE_amount[0], DM_best_placed_data_center[0]['name']
 
     def _calculate_extra_DE_needed_when_DM_place_in_current_data_center(self, data_centers, current_data_center, DE_capacity, DM_capacity):
-        DE_number_when_DM_place_in = self._calculate_DE_extra_needed(current_data_center, DE_capacity, DM_capacity)
-        DE_number_on_others_data_centers = self._calculate_DE_extra_in_others_data_centers(data_centers, current_data_center, DE_capacity)
-        return DE_number_when_DM_place_in + DE_number_on_others_data_centers
+        DE_amount_when_DM_place_in = self._calculate_DE_extra_needed(current_data_center, DE_capacity, DM_capacity)
+        DE_amount_on_others_data_centers = self._calculate_DE_extra_in_others_data_centers(data_centers, current_data_center, DE_capacity)
+        return DE_amount_when_DM_place_in + DE_amount_on_others_data_centers
 
     def _is_needed_less_extra_DE(self, minimum_extra_DE_amount, total_DE_extra_number):
         return  minimum_extra_DE_amount is None or total_DE_extra_number < minimum_extra_DE_amount[0]
@@ -42,3 +42,6 @@ class MinimunDevopsEngineerRetriever(object):
         if minimun_de_extra_number < 0:
             return 0
         return minimun_de_extra_number
+
+    def _sort_by_server_amount(self, DM_best_placed_data_center):
+        return sorted(DM_best_placed_data_center, key=lambda data_center: data_center['servers'], reverse=True)

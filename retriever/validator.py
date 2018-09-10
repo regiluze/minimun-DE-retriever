@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from retriever.exceptions import (
-        MissingRequiredParameterError,
-        InvalidTypeParameterError,
-        InvalidParameterError,
-        )
+    MissingRequiredParameterError,
+    InvalidTypeParameterError,
+    InvalidParameterError,
+)
 
 class Validator(object):
 
@@ -20,13 +20,16 @@ class Validator(object):
         for parameter in self.REQUIRED_INPUT_PARAMETERS:
             if input_data.get(parameter, None) is None:
                 raise MissingRequiredParameterError(parameter)
-        self._check_data_centers_required_data(input_data['data_centers'])
+        self._check_data_centers_required_parameters(input_data['data_centers'])
 
-    def _check_data_centers_required_data(self, data_centers):
+    def _check_data_centers_required_parameters(self, data_centers):
         for data_center in data_centers:
-            for data_center_parameter in self.DATA_CENTER_REQUIRED_PARAMETERS:
-                if data_center.get(data_center_parameter, None) is None:
-                    raise MissingRequiredParameterError('data_centers {}'.format(data_center_parameter))
+            self._check_data_center_required_parameters(data_center)
+
+    def _check_data_center_required_parameters(self, data_center):
+        for data_center_parameter in self.DATA_CENTER_REQUIRED_PARAMETERS:
+            if data_center.get(data_center_parameter, None) is None:
+                raise MissingRequiredParameterError('data_centers {}'.format(data_center_parameter))
 
     def _raise_error_if_invalid_parameter_value(self, input_data):
         if not input_data['data_centers']:
