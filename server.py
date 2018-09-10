@@ -11,20 +11,21 @@ from retriever.exceptions import (
         InvalidParameterError,
         )
 
+BASE_PATH = '/de-minumum-retriever'
 app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/kk", methods=['PUT'])
+@app.route(BASE_PATH, methods=['PUT'])
 def minimun_devops_engineer_extra_needed_service():
     input_data = request.get_json()
 
     try:
         Validator().run(input_data)
-        result = MinimunDevopsEngineerRetriever().process(input_data['DM_capacity'],
-                                                          input_data['DE_capacity'],
-                                                          input_data['data_centers'])
-
+        minimum_extra_DE, data_center_name = MinimunDevopsEngineerRetriever().process(input_data['DM_capacity'],
+                                                                                      input_data['DE_capacity'],
+                                                                                      input_data['data_centers'])
+        result = {'DE': minimum_extra_DE, 'DM_data_center': data_center_name}
         return jsonify(result),200, {'content-type':'application/json'}
     except (MissingRequiredParameterError,
             InvalidParameterError,
