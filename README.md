@@ -34,10 +34,12 @@ pip install -r requirements-dev.txt
 ./dev/acceptance_tests.sh
 ```
 
+## Server start up
+```shellscript
+./bin/startup_app.sh
+```
+
 ## Example
 ```shellscript
-curl -X PUT \                                                                                                            ◼
-  'http://localhost:5000/de-minumum-retriever' \
-  -H 'Content-Type: application/json' \
-  -d '{"DE_capacity":7, "DM_capacity": 5, "data_centers": [{"name": "Paris", "servers": 23}]}'
+curl -X PUT 'http://localhost:5000/de-minumum-retriever'  -H 'Content-Type: application/json' -d '{"DE_capacity":7, "DM_capacity": 5, "data_centers": [{"name": "Paris", "servers": 23}]}'
 ```
