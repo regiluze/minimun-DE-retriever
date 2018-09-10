@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from expects import *
+from expects import expect, raise_error
+
+from retriever.validator import Validator
+from retriever.exceptions import (
+        MissingRequiredParameterError,
+        InvalidTypeParameterError,
+        InvalidParameterError,
+        )
 
 
 with describe('Rest API input data validator spec'):
