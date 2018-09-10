@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from http import HTTPStatus
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -26,15 +28,15 @@ def minimun_devops_engineer_extra_needed_service():
                                                                                       input_data['DE_capacity'],
                                                                                       input_data['data_centers'])
         result = {'DE': minimum_extra_DE, 'DM_data_center': data_center_name}
-        return jsonify(result),200, {'content-type':'application/json'}
+        return jsonify(result), HTTPStatus.OK, {'content-type':'application/json'}
     except (MissingRequiredParameterError,
             InvalidParameterError,
             InvalidTypeParameterError) as exc:
         error = {'msg': '{}-{}'.format(type(exc),exc)}
-        return jsonify(error),400, {'content-type':'application/json'}
+        return jsonify(error), HTTPStatus.BAD_REQUEST, {'content-type':'application/json'}
     except Exception as exc:
         error = {'msg': '{}-{}'.format(type(exc),exc)}
-        return jsonify(error),500, {'content-type':'application/json'}
+        return jsonify(error), HTTPStatus.INTERNAL_SERVER_ERROR, {'content-type':'application/json'}
 
 
 
