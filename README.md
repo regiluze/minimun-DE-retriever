@@ -41,5 +41,5 @@ pip install -r requirements-dev.txt
 
 ## Example
 ```shellscript
-curl -X PUT 'http://localhost:5000/de-minumum-retriever'  -H 'Content-Type: application/json' -d '{"DE_capacity":7, "DM_capacity": 5, "data_centers": [{"name": "Paris", "servers": 23}]}'
+curl -X PUT 'http://localhost:5000/minumum-de-retriever'  -H 'Content-Type: application/json' -d '{"DE_capacity":7, "DM_capacity": 5, "data_centers": [{"name": "Paris", "servers": 23}]}'
 ```

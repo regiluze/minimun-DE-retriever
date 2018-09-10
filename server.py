@@ -11,7 +11,7 @@ from retriever.exceptions import (
         InvalidParameterError,
         )
 
-BASE_PATH = '/de-minumum-retriever'
+BASE_PATH = '/minumum-de-retriever'
 app = Flask(__name__)
 CORS(app)
 
